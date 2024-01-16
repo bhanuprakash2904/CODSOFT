@@ -1,0 +1,81 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+// Function to display the game board
+void displayBoard(vector<vector<char>>& board) {
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            cout << board[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
+
+// Function to check if a player has won
+bool checkWin(vector<vector<char>>& board, char player) {
+    // Check rows
+    for (int i = 0; i < 3; i++) {
+        if (board[i][0] == player && board[i][1] == player && board[i][2] == player) {
+            return true;
+        }
+    }
+
+    // Check columns
+    for (int j = 0; j < 3; j++) {
+        if (board[0][j] == player && board[1][j] == player && board[2][j] == player) {
+            return true;
+        }
+    }
+
+    // Check diagonals
+    if (board[0][0] == player && board[1][1] == player && board[2][2] == player) {
+        return true;
+    }
+    if (board[0][2] == player && board[1][1] == player && board[2][0] == player) {
+        return true;
+    }
+
+    return false;
+}
+
+int main() {
+    // Initialize the game board with empty cells
+    vector<vector<char>> board(3, vector<char>(3, '-'));
+
+    // Alternate turns between players
+    char currentPlayer = 'X';
+    int row, col;
+    do {
+        // Display the current state of the board
+        displayBoard(board);
+
+        // Prompt the current player to enter their move
+        cout << "Player " << currentPlayer << ", enter your move (row and column): ";
+        cin >> row >> col;
+
+        // Update the game board with the player's move
+        board[row - 1][col - 1] = currentPlayer;
+
+        // Check if the current player has won
+        if (checkWin(board, currentPlayer)) {
+            cout << "Player " << currentPlayer << " wins!" << endl;
+            break;
+        }
+
+        // Check for a draw
+        if (board[0][0] != '-' && board[0][1] != '-' && board[0][2] != '-' &&
+            board[1][0] != '-' && board[1][1] != '-' && board[1][2] != '-' &&
+            board[2][0] != '-' && board[2][1] != '-' && board[2][2] != '-') {
+            cout << "It's a draw!" << endl;
+            break;
+        }
+
+        // Switch players
+        currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+
+    } while (true);
+
+    return 0;
+}
